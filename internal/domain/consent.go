@@ -1,13 +1,11 @@
 package domain
 
 import (
-	"errors"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
 )
-
-var ErrConsentNotFound = errors.New("consent not found")
 
 type PolicyType string
 
@@ -16,6 +14,15 @@ const (
 	PolicyPrivacy    PolicyType = "PRIVACY"
 	PolicyThirdParty PolicyType = "THIRD_PARTY"
 )
+
+func ParsePolicyType(s string) (PolicyType, error) {
+	switch p := PolicyType(s); p {
+	case PolicyTerms, PolicyPrivacy, PolicyThirdParty:
+		return p, nil
+	default:
+		return "", fmt.Errorf("%w: %q", ErrInvalidPolicyType, s)
+	}
+}
 
 type Consent struct {
 	ID          uuid.UUID

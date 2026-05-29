@@ -1,21 +1,21 @@
 package domain
 
 import (
-	"errors"
 	"time"
 
 	"github.com/google/uuid"
 )
 
-var ErrTokenNotFound = errors.New("refresh token not found")
-var ErrTokenRevoked = errors.New("refresh token revoked")
-var ErrTokenExpired = errors.New("refresh token expired")
-
 type RefreshToken struct {
 	ID        uuid.UUID
 	UserID    uuid.UUID
+	ClientID  uuid.UUID
 	TokenHash string
 	ExpiresAt time.Time
-	Revoked   bool
+	RevokedAt *time.Time
+	UserAgent *string
 	CreatedAt time.Time
 }
+
+func (t RefreshToken) IsRevoked() bool { return t.RevokedAt != nil }
+func (t RefreshToken) IsExpired() bool { return time.Now().After(t.ExpiresAt) }

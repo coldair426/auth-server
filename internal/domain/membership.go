@@ -7,8 +7,7 @@ import (
 )
 
 type Membership struct {
-	ID        uuid.UUID
-	UserID    uuid.UUID
-	ClientID  uuid.UUID
-	CreatedAt time.Time
+	UserID   uuid.UUID
+	ClientID uuid.UUID
+	JoinedAt time.Time
 }

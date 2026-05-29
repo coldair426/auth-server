@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,10 +15,20 @@ const (
 	ProviderNaver  Provider = "naver"
 )
 
+func ParseProvider(s string) (Provider, error) {
+	switch p := Provider(s); p {
+	case ProviderGoogle, ProviderKakao, ProviderNaver:
+		return p, nil
+	default:
+		return "", fmt.Errorf("%w: %q", ErrInvalidProvider, s)
+	}
+}
+
 type OAuthAccount struct {
 	ID         uuid.UUID
 	UserID     uuid.UUID
 	Provider   Provider
 	ProviderID string
+	Email      *string
 	CreatedAt  time.Time
 }
