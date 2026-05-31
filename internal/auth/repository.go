@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"time"
 
 	"github.com/coldair426/auth-server/internal/domain"
 	"github.com/google/uuid"
@@ -30,4 +31,16 @@ type RefreshTokenRepository interface {
 type MembershipRepository interface {
 	FindByUserAndClient(ctx context.Context, userID, clientID uuid.UUID) (domain.Membership, error)
 	Create(ctx context.Context, m domain.Membership) error
+}
+
+// StateData는 OAuth2 state 값에 연관된 로그인 요청 데이터이다.
+type StateData struct {
+	ClientID    uuid.UUID
+	RedirectURI string
+}
+
+// StateStore는 단기 OAuth2 state 저장소 인터페이스이다.
+type StateStore interface {
+	Store(state string, data StateData, ttl time.Duration)
+	Consume(state string) (StateData, bool)
 }

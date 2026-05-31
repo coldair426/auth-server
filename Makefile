@@ -1,4 +1,4 @@
-.PHONY: run build migrate-up migrate-down sqlc-gen seed
+.PHONY: run build migrate-up migrate-down sqlc-gen seed test test-integration
 
 run:
 	go run ./cmd/server
@@ -17,3 +17,9 @@ sqlc-gen:
 
 seed:
 	psql "$(DATABASE_URL)" -f db/seed.sql
+
+test:
+	go test ./...
+
+test-integration:
+	TEST_DATABASE_URL="$(TEST_DATABASE_URL)" go test -tags=integration ./internal/integration/ -v

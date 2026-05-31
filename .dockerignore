@@ -1,0 +1,10 @@
+bin/
+keys/
+*.env
+.env*
+*.pem
+docker-compose*.yml
+.git/
+.gitignore
+README.md
+AI_RULES.md
